@@ -26,7 +26,7 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
 ADD https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh tmp/Miniconda3-latest-Linux-x86_64.sh
 RUN bash tmp/Miniconda3-latest-Linux-x86_64.sh -b
 ENV PATH $PATH:/root/miniconda3/bin/
-COPY environment.yml  .
+COPY traffic-sign-classifier-environment.yml  .
 RUN conda install --yes pyyaml
 RUN conda env create -f traffic-sign-classifier-environment.yml
 
