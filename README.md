@@ -36,3 +36,10 @@ Simply execute:
 ```docker run -it -p 8888:8888 -v "`pwd`":/notebooks pejvan/trafficsignclassifier```
 
 Then open your browser to: `http://localhost:8888`
+
+This is possible because the dockerfile in this repo has been built and pushed onto docker hub:
+
+```shell 
+$ docker build -t pejvan/trafficsignclassifier -f traffic-sign-classifier.dockerfile .
+$ docker push pejvan/trafficsignclassifier 
+```
