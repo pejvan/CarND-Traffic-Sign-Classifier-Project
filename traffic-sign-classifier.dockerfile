@@ -30,6 +30,9 @@ COPY traffic-sign-classifier-environment.yml  .
 RUN conda install --yes pyyaml
 RUN conda env create -f traffic-sign-classifier-environment.yml
 
+# resolve the missing opencv package issue with hdf5: 
+# http://stackoverflow.com/questions/22589157/anaconda-doesnt-find-module-cv2
+RUN conda install -c anaconda hdf5=1.8.17 
 RUN conda install -c https://conda.anaconda.org/menpo opencv3
 RUN conda install --name CarND-TensorFlow-Lab -c conda-forge tensorflow
 
