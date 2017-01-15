@@ -1,9 +1,6 @@
-FROM python:3.5.2-slim
-
-#based in image provided by udacity / @joshuacook
+FROM python 
 MAINTAINER pejvan@gmail.com
 
-# Pick up some TF dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         curl \
@@ -11,29 +8,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libpng12-dev \
         libzmq3-dev \
         pkg-config \
-        python3-dev \
         rsync \
         software-properties-common \
         unzip \
+        libgtk2.0-dev \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
-    python get-pip.py && \
-    rm get-pip.py
-
 ADD https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh tmp/Miniconda3-latest-Linux-x86_64.sh
 RUN bash tmp/Miniconda3-latest-Linux-x86_64.sh -b
 ENV PATH $PATH:/root/miniconda3/bin/
+
 COPY traffic-sign-classifier-environment.yml  .
 RUN conda install --yes pyyaml
-RUN conda env create -f traffic-sign-classifier-environment.yml
+RUN conda env create python=3 -f traffic-sign-classifier-environment.yml
 
 # resolve the missing opencv package issue with hdf5: 
 # http://stackoverflow.com/questions/22589157/anaconda-doesnt-find-module-cv2
-RUN conda install -c anaconda hdf5=1.8.17 
-RUN conda install -c https://conda.anaconda.org/menpo opencv3
+# RUN conda install -c anaconda hdf5=1.8.17 
+#RUN conda install -c https://conda.anaconda.org/menpo opencv3
+RUN conda install -c menpo opencv3=3.1.0
 RUN conda install --name CarND-TensorFlow-Lab -c conda-forge tensorflow
 
 # Set up our notebook config.
