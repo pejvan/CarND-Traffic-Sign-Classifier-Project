@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         software-properties-common \
         unzip \
         libgtk2.0-dev \ 
-#required for opencv3 (https://github.com/jupyter/docker-stacks/issues/228)
+#libgtk2 is required for opencv3 (https://github.com/jupyter/docker-stacks/issues/228)
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -22,13 +22,7 @@ RUN bash tmp/Miniconda3-latest-Linux-x86_64.sh -b
 ENV PATH /root/miniconda3/bin:$PATH
 
 COPY traffic-sign-classifier-environment.yml  .
-#RUN conda install --yes pyyaml
-RUN echo "hello"
 RUN conda env create python=3 -f traffic-sign-classifier-environment.yml
-#RUN conda env create -f traffic-sign-classifier-environment.yml
-
-#RUN conda install -c menpo opencv3=3.1.0
-#RUN conda install --name CarND-TensorFlow-Lab -c conda-forge tensorflow
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
