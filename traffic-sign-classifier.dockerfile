@@ -11,25 +11,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         rsync \
         software-properties-common \
         unzip \
-        libgtk2.0-dev \
+        libgtk2.0-dev \ 
+#required for opencv3 (https://github.com/jupyter/docker-stacks/issues/228)
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 ADD https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh tmp/Miniconda3-latest-Linux-x86_64.sh
 RUN bash tmp/Miniconda3-latest-Linux-x86_64.sh -b
-ENV PATH $PATH:/root/miniconda3/bin/
+ENV PATH /root/miniconda3/bin:$PATH
 
 COPY traffic-sign-classifier-environment.yml  .
-RUN conda install --yes pyyaml
+#RUN conda install --yes pyyaml
+RUN echo "hello"
 RUN conda env create python=3 -f traffic-sign-classifier-environment.yml
+#RUN conda env create -f traffic-sign-classifier-environment.yml
 
-# resolve the missing opencv package issue with hdf5: 
-# http://stackoverflow.com/questions/22589157/anaconda-doesnt-find-module-cv2
-# RUN conda install -c anaconda hdf5=1.8.17 
-#RUN conda install -c https://conda.anaconda.org/menpo opencv3
-RUN conda install -c menpo opencv3=3.1.0
-RUN conda install --name CarND-TensorFlow-Lab -c conda-forge tensorflow
+#RUN conda install -c menpo opencv3=3.1.0
+#RUN conda install --name CarND-TensorFlow-Lab -c conda-forge tensorflow
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
@@ -49,5 +48,7 @@ EXPOSE 6006
 EXPOSE 8888
 
 WORKDIR "/notebooks"
+
+RUN /bin/bash -c "source activate CarND-Traffic-Sign-Classifier-Project"
 
 CMD ["/run_jupyter.sh"]

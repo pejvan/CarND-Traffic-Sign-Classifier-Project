@@ -14,5 +14,5 @@
 # limitations under the License.
 # ==============================================================================
 
-. activate CarND-TensorFlow-Lab
+. activate CarND-Traffic-Sign-Classifier-Project
 jupyter notebook "$@"
