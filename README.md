@@ -43,3 +43,11 @@ This is possible because the dockerfile in this repo has been built and pushed o
 $ docker build -t pejvan/trafficsignclassifier -f traffic-sign-classifier.dockerfile .
 $ docker push pejvan/trafficsignclassifier 
 ```
+
+If you get weird permissioned denied errors in Docker, or that Jupyter complains that `Refusing to serve hidden directory, via 404 Error
+`, it might be related to SELinux security issues. In which case, you can temporarily disable SELinux by running the following command:
+```bash
+su -c "setenforce 0"
+```
+
+

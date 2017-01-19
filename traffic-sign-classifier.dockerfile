@@ -1,4 +1,4 @@
-FROM python 
+FROM python
 MAINTAINER pejvan@gmail.com
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -11,13 +11,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         rsync \
         software-properties-common \
         unzip \
-        libgtk2.0-dev \ 
+        libgtk2.0-dev \
 #libgtk2 is required for opencv3 (https://github.com/jupyter/docker-stacks/issues/228)
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ADD https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh tmp/Miniconda3-latest-Linux-x86_64.sh
+#ADD https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh tmp/Miniconda3-latest-Linux-x86_64.sh
+COPY Miniconda3-latest-Linux-x86_64.sh tmp/Miniconda3-latest-Linux-x86_64.sh
 RUN bash tmp/Miniconda3-latest-Linux-x86_64.sh -b
 ENV PATH /root/miniconda3/bin:$PATH
 
@@ -28,7 +29,9 @@ RUN conda env create python=3 -f traffic-sign-classifier-environment.yml
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
-COPY . /notebooks
+COPY notebooks /root/notebooks
+RUN chown -R root /root/notebooks
+RUN chgrp -R root /root/notebooks
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062
@@ -42,7 +45,6 @@ EXPOSE 6006
 EXPOSE 8888
 
 WORKDIR "/notebooks"
-
 RUN /bin/bash -c "source activate CarND-Traffic-Sign-Classifier-Project"
 
 CMD ["/run_jupyter.sh"]
