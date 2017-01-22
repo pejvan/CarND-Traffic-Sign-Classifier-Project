@@ -33,7 +33,7 @@ jupyter notebook Traffic_Sign_Classifier.ipynb
 
 ### Easier setup
 Simply execute:
-```docker run -it -p 8888:8888 -v "`pwd`":/notebooks pejvan/trafficsignclassifier```
+```docker run -it -p 8888:8888 -v "`pwd`/notebooks":/notebooks pejvan/trafficsignclassifier```
 
 Then open your browser to: `http://localhost:8888`
 
